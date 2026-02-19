@@ -236,9 +236,9 @@ A lifespan timeline of the top 10 most reviewed games shows that many titles mai
 ## Data Parsing and Preprocessing Issues
 
 ### 1. Extremely Large Dataset Size (≈40GB CSV)
-The original dataset was approximately 40GB in CSV format and contained over 100 million reviews. Loading the full dataset into memory using pandas was not possible due to memory limitations. Attempting to read the entire CSV file would result in excessive RAM usage and really long processing times.
+The original dataset was about 40GB in CSV format and contained over 100 million reviews. Loading the full dataset into memory using pandas was not possible due to memory limitations. Attempting to read the entire CSV file would result in excessive RAM usage and really long processing times.
 
-So in order to resolve this, I used DuckDB to query the dataset directly from disk, allowing scalable SQL-based analysis without loading the entire dataset into memory. Also, I converted the dataset to a compressed Parquet file to significantly improve query speed and reduce file size.
+So in order to resolve this, I used DuckDB to query the dataset directly from the disk which allows for SQL-based analysis without loading the entire dataset into memory. Also, I converted the dataset to a compressed Parquet file to significantly improve query speed and reduce file size.
 
 ### 2. CSV Parsing Errors Due to Extremely Long Review Text
 When I went to preprocess the file into a Parquet file the CSV parser produced errors related to maximum line size being exceeded. Some review text fields contained extremely long strings (multi megabyte lines), which caused parsing failures when using default CSV settings.
