@@ -148,14 +148,14 @@ The dataset is highly imbalanced across games, with a small number of popular ti
 
 
 
-    count    6.057700e+05
-    mean     1.377480e+04
-    std      4.037525e+04
+    count    5.316220e+05
+    mean     1.496931e+04
+    std      4.343806e+04
     min      0.000000e+00
-    25%      5.950000e+02
-    50%      2.122000e+03
-    75%      8.421000e+03
-    max      4.990477e+06
+    25%      4.770000e+02
+    50%      1.978000e+03
+    75%      8.935000e+03
+    max      3.622268e+06
     Name: author_playtime_forever, dtype: float64
 
 
@@ -179,7 +179,7 @@ The distribution from the random sample of the dataset is of player playtime whi
 
 
 
-    np.float64(0.019971276226950822)
+    np.float64(0.009149358002490492)
 
 
 
