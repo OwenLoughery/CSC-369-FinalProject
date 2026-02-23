@@ -109,7 +109,17 @@ The timeframe of the data set seems really good as it has data from 2010 until 2
     
 
 
-Review volume looks accurate with increasing steady over time until a huge spike when covid started as this makes sense since a ton of people started playing video games in this time. There is a sudden drop at the end of the data set which is a little weird so might want to cut off right before then.
+
+    FloatProgress(value=0.0, layout=Layout(width='auto'), style=ProgressStyle(bar_color='black'))
+
+
+
+    
+![png](EDA_files/EDA_13_3.png)
+    
+
+
+Review volume looks accurate with increasing steady over time until a huge spike when covid started as this makes sense since a ton of people started playing video games in this time. There is a sudden drop at the end of the data set which is a little weird so might want to cut off right before then. Cutting off the last two days in the dataset appears to fix this issue.
 
 ### Overall Sentiment Over Time
 
@@ -148,14 +158,14 @@ The dataset is highly imbalanced across games, with a small number of popular ti
 
 
 
-    count    5.316220e+05
-    mean     1.496931e+04
-    std      4.343806e+04
+    count    5.383990e+05
+    mean     1.683426e+04
+    std      4.559865e+04
     min      0.000000e+00
-    25%      4.770000e+02
-    50%      1.978000e+03
-    75%      8.935000e+03
-    max      3.622268e+06
+    25%      7.160000e+02
+    50%      2.913000e+03
+    75%      1.220700e+04
+    max      2.743970e+06
     Name: author_playtime_forever, dtype: float64
 
 
@@ -174,28 +184,44 @@ The dataset is highly imbalanced across games, with a small number of popular ti
 
 The distribution from the random sample of the dataset is of player playtime which is extremely right skewed with a heavy tail and a large number of near zero values. This makes sense as on average people play games casually but some people have extremely high video game playtime hours like people who are just addicted or those who have made a career out of video games. Also, some people "afk" in a game which is where you leave the game on for some reason that depends on what the game is so these people would have extremely high game playtime hours as even though they aren't actually playing steam records these users as still playing.
 
+
+    
+![png](EDA_files/EDA_29_0.png)
+    
+
+
+
+    FloatProgress(value=0.0, layout=Layout(width='auto'), style=ProgressStyle(bar_color='black'))
+
+
+       min_reviews  max_reviews  avg_reviews  median  p90  p95  p99  p995  p999
+    0            1        10446    26.827173       6   43   78  301   583  2703
+    
+
+To decide on a cutoff of the max number of reviews an author can have in the dataset I am going to cut it off by the 99.5th percentile to remove extreme outliers. This appears to be the best cutoff with there being a huge jump in the number of reviews between the 99.5th and 99.9th percentiles so these are probably for the most part bot reviews. Also at the same time having people with nearly 600 reviews seems more of legit high engaged users that have been gaming for many years instead of bot reviews.
+
 ### Reviews with Zero Playtime
 
 
 
 
-    np.float64(0.009149358002490492)
+    np.float64(0.005679802525636192)
 
 
 
-Just did this to check if there were a large amount of reviews with people that had 0 playtime minutes but this is a very small percent (~ 2%) so this isn't concerning for the analysis.
+Just did this to check if there were a large amount of reviews with people that had 0 playtime minutes but this is a very small percent (~ .5%) so this isn't concerning for the analysis.
 
 ### Language Distribution (Overall Counts and Percent each makes up of Dataset)
 
 
     
-![png](EDA_files/EDA_33_0.png)
+![png](EDA_files/EDA_35_0.png)
     
 
 
 
     
-![png](EDA_files/EDA_33_1.png)
+![png](EDA_files/EDA_35_1.png)
     
 
 
@@ -209,7 +235,7 @@ Found that there is roughly only 48% of reviews in the data set are in english. 
 
 
     
-![png](EDA_files/EDA_36_1.png)
+![png](EDA_files/EDA_38_1.png)
     
 
 
@@ -227,11 +253,29 @@ Just did a quick check to see the amount of games that were in the data set to m
 
 
     
-![png](EDA_files/EDA_42_0.png)
+![png](EDA_files/EDA_44_0.png)
     
 
 
 A lifespan timeline of the top 10 most reviewed games shows that many titles maintain active review activity for over a decade capturing reviews from there release until the end of the dataset. Games such as Terraria, Team Fortress 2, and Counter-Strike exhibit continuous engagement from early 2010s through 2023, showing that the dataset captures actual long-term player sentiment rather than just short-lived review bursts. This supports the validity of my research hypothesis, as long-term review coverage is necessary to analyze how player sentiment evolves in response to game updates, developer feedback, and lifecycle changes.
+
+
+    FloatProgress(value=0.0, layout=Layout(width='auto'), style=ProgressStyle(bar_color='black'))
+
+
+       min_len  max_len     avg_len  median_len  p95_len  p99_len  p999_len
+    0        1  9801289  185.733377          40      806     2372      6347
+    
+
+
+    FloatProgress(value=0.0, layout=Layout(width='auto'), style=ProgressStyle(bar_color='black'))
+
+
+
+    
+![png](EDA_files/EDA_46_3.png)
+    
+
 
 ## Data Parsing and Preprocessing Issues
 
@@ -260,3 +304,16 @@ The dataset records only the final state of each review which means that edited 
 
 This limitation was retained rather than filtered because edited reviews provide meaningful insight into changing player sentiment over time, which is directly relevant to my research hypothesis. So I will just handle this in my actual analysis, so it doesn't skew my results without taking it out entirely.
 
+### 6. Amount of Time Played
+The dataset contains many reviews of people with zero time played ever so eliminating these would be good since these are most likely either bot/spam reviews or just some outside factor of something that is not relevant to what we want in this study. 
+
+I thought about capping the playtime max to a certain time but finding a max timeframe would be very hard to do since people that are extremely commited to their game might have extremely high hours due to leaving the game running 24/7 to AFK farm or something else depending on the game. Since these extremely commited players reviews are important, I decided not to cap off the timeframe.
+
+### 7. Each Players Number of Reviews
+Due to an extremely right skewed distribution of the number of reviews for each author from the sampled dataframe. It appears that there are many bot accounts that most likely are spamming reviews for one game or across multiple games in the steam dataset. So to decide on a cutoff of the max number of reviews an author can have in the dataset I am going to cut it off by the 99.5th percentile to remove extreme outliers. This appears to be the best cutoff with there being a huge jump in the number of reviews between the 99.5th and 99.9th percentiles so these are probably for the most part bot reviews. Also at the same time having people with nearly 600 reviews seems more of legit high engaged users that have been gaming for many years instead of bot reviews.
+
+### 8. Sudden Drop Off at End of Dataset
+There is a sudden drop-off in review volume at the end of the dataset which is probably due to a data collection error so in order to account for this I am going to set a date cutoff in the preprocessing. This is just so there aren't any misleading time trends in the actual analysis. By setting the cutoff to timestamp_created < '2023-11-01' this fixes the issue and barely loses any data as this is two days before the dataset ends.
+
+### 9. Massive Review Lengths
+When initially reading in the reviews there were some that were massive with the largest one being almost 10 million characters long. So, this is extremely evident of being bot reviews and not ones we want to include in the analysis. To account for this I am going to cut off the reviews to ones that are shorter than 5000 characters in length. This is because it keeps about 99.8% of the reviews and will remove all the ones that are definitely bot reviews / spam. In the graph it can be seen that at the log10 of 3 which is around 1000 characters there are many genuine long reviews that exist so making the review cut off to be around 5000 seems to be a good cutoff since it is highly unlikely a real person is writing a review longer than this and it doesn't remove a huge amount of the data.
