@@ -2,7 +2,9 @@
 
 ## Question:
 
-How does player sentiment toward video games change over time, and is there evidence that game developers improve player satisfaction following periods of negative feedback?
+Do highly engaged players (high playtime) leave negative reviews during controversy periods but continue playing the game?
+
+What are the changes in review activity during controversy periods and how does this affect player activity?
 
 ## Why is this question worth answering:
 
