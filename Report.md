@@ -1,7 +1,21 @@
+    <_duckdb.DuckDBPyConnection at 0x1ea60965bf0>
+
+
+
 ## 1. Introduction
 Modern video games, particularly big AAA titles, receive continuous feedback from players through online review platforms such as Steam. During controversy periods (like unpopular updates, monetization changes, or technical issues) games often experience sudden/extreme drops in review sentiment which is basically how people are liking the game. But what is it that leads these protests against the game change through the negative reviews?
 
 This study analyzes over 100 million Steam reviews from a ~40GB dataset to investigate the relationship between player engagement and negative sentiment during controversy periods. Rather than focusing specifically on sentiment trends, this analysis examines whether highly engaged players are responsible for negative review spikes, showing how changes in a game can cause backlash in the diehard community.
+
+### What the data set looks like
+
+|   recommendationid |    author_steamid | game           |   timestamp_created | review_excerpt                    |   voted_up |   playtime_hours_at_review |
+|-------------------:|------------------:|:---------------|--------------------:|:----------------------------------|-----------:|---------------------------:|
+|          148912575 | 76561198363716821 | Counter-Strike |          1698329419 | GOAT Game !!                      |          1 |                    3.28333 |
+|          148895540 | 76561198134752176 | Counter-Strike |          1698306096 | First crush. Always in my heart.  |          1 |                  201.783   |
+|          148895230 | 76561197985437504 | Counter-Strike |          1698305569 | best version of cs ever, history. |          1 |                  708.583   |
+
+This is just a few of the attributes in the data set and are the ones I use primarily in this report. Each row represents a users recommendation they left, which is made up of the text they leave for the review then also whether they vote the game up or down (1 = up, 0 = down). Other useful variables I used from the dataset are the game name, timestamp the review was made (for doing timeseries), and the playtime of the user when they left the review. There are a total of 24 attributes in the data set but these are primarily the ones that were important for my analysis.
 
 ## 2. Research Question and Hypothesis
 ### Research Question:
@@ -35,13 +49,13 @@ Additionally, the presence of sharp sentiment dips supports the methodological a
 
 
     
-![png](Report_files/Report_4_0.png)
+![png](Report_files/Report_7_0.png)
     
 
 
 
     
-![png](Report_files/Report_4_1.png)
+![png](Report_files/Report_7_1.png)
     
 
 
@@ -58,7 +72,7 @@ The analysis of these revealed substantial sentiment dips in major games such as
 
 
     
-![png](Report_files/Report_6_0.png)
+![png](Report_files/Report_9_0.png)
     
 
 
@@ -85,7 +99,32 @@ For this analysis using playtime at review instead of lifetime playtime is metho
 
 Furthermore, the playtime levels of negative and positive reviewers during dip periods were nearly identical, suggesting that these controversy periods bring in the whole community which causes those that agree with the games decisions to leave positive reviews, not just community backlash.
 
-In order to further look into this though, if there is actually a difference in the periods like it appears, I am going to do some statistical analysis on this to find if there is a significant difference and that it is not by chance alone.
+To visualize how engagement behaves around these controversy periods, I made time series plots showing the positive review rate alongside the median playtime at review for several of the largest dip events identified in the dataset, looking at the games mentioned before. Each figure shows the six months before and after the month in which the sentiment crash occurred. In these plots, the sharp drop in the positive review rate clearly marks the controversy period (also highlighted), while the median playtime at review provides a measure of how engaged the reviewers were at the time they left feedback. Across all three games, reviewer playtime remains relatively high around the dip event and often shows a gradual increase in the months leading up to it. Rather than a sudden spike occurring exactly at the dip month, engagement appears to build up beforehand and remain elevated during the backlash. This visual pattern suggests that the users leaving reviews during these events tend be active players in the game prior to the controversy, supporting my hypothesis that these backlash events are driven by more commited gamers. The reason that there isn't just a sudden spike in the playtime hours is because when a backlash event occurs there is going to be a buildup of commited players starting to leave reviews before the event happens (responding to rumors, starting sentiment, etc.). Then when the event occurs this causes very negative sentiment from these players all leaving negative reviews at once causing this dip in sentiment, but not a spike in playtime hours as that is more of a buildup pattern.
+
+
+    
+![png](Report_files/Report_11_0.png)
+    
+
+
+
+    
+![png](Report_files/Report_11_1.png)
+    
+
+
+
+    
+![png](Report_files/Report_11_2.png)
+    
+
+
+For each backlash event after doing some research I found what happened that caused each backlash:
+1. GTA: Rockstar (GTA's developers) shut down OpenIV which was the main modding tool people used. So this makes a lot of sense why much more dedicated gamers would leave negative reviews because these are the types of players that would use the mods and also make them, whereas newer/casual players don't tend to interact with game mods.
+2. CSGO2: Developers incorporated a battle royal mode called "Danger Zone" which was not welcomed by the community and was very buggy at release which explains why there was this dip in sentiment and would be something composed of mostly dedicated players expressing there distaste to the change in the game.
+3. PUBG: The game moved from early access to an official release of version 1.0 which was supposed to significantly improve performance but instead did the opposite. Not only that but at the same time the developers introduced paid cosmetic loot boxes when it was already a paid game, so this really upset the community. A third thing that happened was a massive cheating issue at this new release of making the game official. All these issues correlate to negative sentiment that would come from people who have been already playing the game and are more commited members of the community making sense of the high playtime for the reviews at this dip period.
+
+In order to further look into this though, whether there is actually an overall general difference in the periods like it appears, I am going to do some statistical analysis to find if there is a significant difference and that it is not by chance alone.
 
 ## 6. Statistical Analysis
 
@@ -95,13 +134,13 @@ Here are the distributions of the playtime at review and the log transformed pla
 
 
     
-![png](Report_files/Report_9_0.png)
+![png](Report_files/Report_15_0.png)
     
 
 
 
     
-![png](Report_files/Report_9_1.png)
+![png](Report_files/Report_15_1.png)
     
 
 
@@ -145,16 +184,6 @@ The Tukey results show that all group pairs are significantly different. Most im
 The findings strongly support the hypothesis that negative sentiment spikes are primarily driven by highly engaged players rather than casual or low-playtime users. Instead of reflecting disengagement, controversy periods are characterized by reviews from players with substantially higher playtime at the moment of review, indicating continued investment in the game despite dissatisfaction.
 
 This pattern aligns closely with what gamers face being frustrated loyalty, where long-term players critique games they are deeply invested in rather than simply leaving. In contrast, negative reviews during normal periods were associated with significantly lower playtime at review, suggesting that routine negative sentiment is more likely to come from less engaged or short-term players.
-
-Another thing to note is that edited reviews were found to be more negative on average than non-edited reviews during normal periods, which may indicate that more invested players are more likely to revisit and update their feedback over time as their experience with the game evolves.
-
-However, during controversy periods, edited and non-edited reviews exhibited nearly identical sentiment (~51% positive), suggesting that large-scale backlash events affect the overall community similarly regardless of whether reviews are later updated.
-
-
-    
-![png](Report_files/Report_12_0.png)
-    
-
 
 ## 8. Dataset Limitations
 
