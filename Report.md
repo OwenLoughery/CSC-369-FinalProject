@@ -1,7 +1,3 @@
-    <_duckdb.DuckDBPyConnection at 0x1ea60965bf0>
-
-
-
 ## 1. Introduction
 Modern video games, particularly big AAA titles, receive continuous feedback from players through online review platforms such as Steam. During controversy periods (like unpopular updates, monetization changes, or technical issues) games often experience sudden/extreme drops in review sentiment which is basically how people are liking the game. But what is it that leads these protests against the game change through the negative reviews?
 
@@ -30,7 +26,7 @@ This hypothesis is motivated by observed patterns in gaming communities from gam
 
 ## 3. Global Sentiment Trends Over Time (Exploratory Analysis)
 
-Before finding controversy periods, I decided to do look at exploratory analysis of overall sentiment trends over time to validate the time-series reliability of the dataset.
+Before finding controversy periods, I decided to do an exploratory analysis of overall sentiment trends over time to validate the time-series reliability of the dataset.
 
 Monthly sentiment was calculated as:
 
