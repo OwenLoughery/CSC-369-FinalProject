@@ -1,4 +1,4 @@
-# CSC-369-FinalProject
+# This Project
 
 ## Question:
 
@@ -13,3 +13,22 @@ Most times when games experience a huge inflow of negative reviews at once it is
 I found the data I am using at https://www.kaggle.com/datasets/kieranpoc/steam-reviews
 
 The dataset used for my analysis is a large scale Steam Reviews dataset (~40GB in original CSV format), containing over 100 million user reviews. The dataset includes important variables such as review timestamps, recommendation status (positive or negative), playtime metrics, weighted voting score (helpfulness score that is steam generated), and engagement indicators (votes and comments).
+
+## What’s in this repo
+
+1) Preprocessing (Large Dataset → Analysis-Ready)
+Script to clean and restructure the raw Steam reviews dataset so it’s usable for analysis (filtering, parsing timestamps, and creating the datasets used in the analysis).
+
+First did very basic preprocessing to do EDA then the final preprocessing script was completed after doing EDA of the dataset.
+
+File: `preprocess.py`
+
+2) Exploratory Data Analysis (EDA)
+Initial exploration of review behavior over time, including identifying “review dip” periods (spikes in negative reviews) and comparing them to normal review periods. All work that led to my final conclusions in my report can be found here plus other areas I explored relating to my project question.
+
+Files: `EDA.ipynb` / `EDA.md`
+
+3) Final Report (Review Dip vs Normal Period Comparison)
+Main writeup and results comparing negative-review spike periods to baseline review behavior, with plots + conclusions tied to the project question.
+
+Files: `Report.ipynb` / `Report.md`
